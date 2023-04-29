@@ -37,7 +37,7 @@ The `Stack_new` function allocates a new instance of a stack data type.
 | `void (*fptr_destroy)(void*)` | Provides a way to free dynamically allocated data when `Stack_destroy` is called. If the stack contains data dynamically allocated using `malloc`, `destroy` should be set to `free` to free the data as the stack is destroyed. For structured data containing several dynamically allocated members, destroy should be set to a user-defined function that calls `free` for each dynamically allocated member as well as for the structure itself. For a stack containing data that should not be freed, destroy should be set to *NULL* |
 | `void (*fptr_print)(const Data)` | Provides a default way to display content of the stack when `Stack_display` is invoked. [How to write `print` functions](#how-to-write-print-functions) |
 
-**Return value**: `List` if creating a new stack is successful, or `NULL` otherwise.
+**Return value**: `Stack` if creating a new stack is successful, or `NULL` otherwise.
 
 ### Stack_print
 
@@ -49,7 +49,7 @@ The `Stack_print` function outputs content of the stack. The `fptr_print` argume
 
 | Type | Description |
 | ---- | ----------- |
-| `const Stack list` | The stack to be displayed |
+| `const Stack stack` | The stack to be displayed |
 | `void (*fptr_print)(const Data)` | The callback function to handle data in a node |
 
 **Return value**: None
@@ -64,7 +64,7 @@ The `Stack_destroy` function destroys a stack. Primarally this means removing al
 
 | Type | Description |
 | ---- | ----------- |
-| `Stack* list` | A pointer to a stack to be destroyed |
+| `Stack* stack` | A pointer to a stack to be destroyed |
 
 **Return value**: None
 
@@ -111,7 +111,6 @@ The `Stack_peek` function return `Data` stored in the element at the top of the 
 
 **Return value**: `Data` if a stack is not empty, or `NULL` otherwise.
 
-
 ### Stack_get_size
 
 ```C
@@ -140,21 +139,6 @@ void print_int(Data data) {
 ```
 
 Keep in mind that `fptr_print` expects its argument to be a type of `Data`.
-
-### How to write `match` functions
-
-A `fptr_match` function is a callback that is passed as an argument to another function. In order to write a *match* function, one must assume that a list is *homogeneous* (i.e., contains data of the same type). According to the API, the `fptr_match` function should return *0* if two elements are the same:
-
-```C
-/* just an example of the implementation of the `fptr_match` callback function */
-int match_int(Data data_1, Data data_2) {
-    return (*((int*) x) - *((int*) y));
-}
-```
-
-The `fptr_match` function takes two arguments of type `Data`: `data_1` and `data_2`. The `data_1` parameter takes data of the list node, and `data_2` is data to compare with. Keep in mind that a match function accepts `void*` pointers, and you cast/dereference them to the appropriate type in a `callback` function body.
-
-If a list contains complex data (e.g., structs, for example), the user must decide how to compare them.
 
 ## Resources
 
