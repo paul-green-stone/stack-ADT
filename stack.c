@@ -27,7 +27,7 @@ static Node Node_new(Data data) {
             node->next = NULL;
         }
         else {
-            warn_with_sys_msg("Memory allocation failure");
+            warn_with_sys_msg(__func__);
         }
     }
     else {
@@ -103,7 +103,7 @@ void Stack_print(const Stack stack, void (*fptr_print)(const Data)) {
         printf("]\n");
     }
     else {
-        warn_with_user_msg(__func__, "stack can't be NULL");
+        warn_with_user_msg(__func__, "provided stack is NULL");
     }
 
     return ;
@@ -129,6 +129,9 @@ void Stack_destroy(Stack* stack) {
         free(*stack);
 
         *stack = NULL;
+    }
+    else {
+        warn_with_user_msg(__func__, "provided stack pointer and/or stack is NULL");
     }
 
     return ;
@@ -162,7 +165,7 @@ Data Stack_pop(Stack stack) {
         }
     }
     else {
-        warn_with_user_msg(__func__, "stack can't be NULL");
+        warn_with_user_msg(__func__, "provided stack is NULL");
     }
 
     return data;
@@ -194,7 +197,7 @@ int8_t Stack_push(Stack stack, const Data data) {
         }
     }
     else {
-        warn_with_user_msg(__func__, "stack can't be NULL");
+        warn_with_user_msg(__func__, "provided stack is NULL");
     }
 
     return result;
@@ -215,6 +218,9 @@ Data Stack_peek(const Stack stack) {
         if (stack->size > 0) {
             data = stack->top->data;
         }
+    }
+    else {
+        warn_with_user_msg(__func__, "provided stack is NULL");
     }
 
     return data;
