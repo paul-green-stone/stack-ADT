@@ -12,15 +12,7 @@
 
 ## About
 
-Stack is  an efficient data structures for storing and retrieving data in a last-in, first-out, or LIFO, order. This allows us to retrieve data in the opposite order as it was stored.
-
-The `Stack` is a pointer to an incomplete type,
-
-```C
-typedef struct _stack* Stack;
-```
-
-which means users are only allowed to work with stacks through the use of specified functions (e.g., interfaces, the **first-class ADT pattern**).
+Stack is an efficient data structures for storing and retrieving data in a last-in, first-out, or LIFO, order. This allows us to retrieve data in the opposite order as it was stored.
 
 ## API
 
@@ -35,7 +27,7 @@ The `Stack_new` function allocates a new instance of a stack data type.
 | Type | Description |
 | ---- | ----------- |
 | `void (*fptr_destroy)(void*)` | Provides a way to free dynamically allocated data when `Stack_destroy` is called. If the stack contains data dynamically allocated using `malloc`, `destroy` should be set to `free` to free the data as the stack is destroyed. For structured data containing several dynamically allocated members, destroy should be set to a user-defined function that calls `free` for each dynamically allocated member as well as for the structure itself. For a stack containing data that should not be freed, destroy should be set to *NULL* |
-| `void (*fptr_print)(const Data)` | Provides a default way to display content of the stack when `Stack_display` is invoked. [How to write `print` functions](#how-to-write-print-functions) |
+| `void (*fptr_print)(const Data)` | The fptr_print argument is a function used by Stack_print operation to display a stack content [How to write `print` functions](#how-to-write-print-functions) |
 
 **Return value**: `Stack` if creating a new stack is successful, or `NULL` otherwise.
 
@@ -45,12 +37,12 @@ The `Stack_new` function allocates a new instance of a stack data type.
 void Stack_print(const Stack stack, void (*fptr_print)(const Data));
 ```
 
-The `Stack_print` function outputs content of the stack. The `fptr_print` argument is a callback function that is called on every node while traversng the stack. If `fptr_print` is NULL, the `fptr_print` function specified in `Stack_new` is used.
+The `Stack_print` operation displays the stack specified by `stack`. The `fptr_print` argument is a function that is called on every stack member while traversng it. If `fptr_print` is *NULL*, the `fptr_print` function specified in `Set_new` is used.
 
 | Type | Description |
 | ---- | ----------- |
 | `const Stack stack` | The stack to be displayed |
-| `void (*fptr_print)(const Data)` | The callback function to handle data in a node |
+| `void (*fptr_print)(const Data)` | The function to print data in a stack |
 
 **Return value**: None
 
@@ -81,7 +73,7 @@ The `Stack_push` function pushes an element onto the stack specified by `stack`.
 | `Stack stack` | The stack to push an element onto |
 | `const Data data` | Data to be pushed |
 
-**Return value**: 1 if pushing the element is successful, or 0 otherwise.
+**Return value**: *1* if pushing the element is successful, or *0* otherwise.
 
 ### Stack_pop
 
@@ -125,9 +117,11 @@ ssize_t Stack_get_size(const Stack stack);
 
 ## Examples
 
+By default `Data` is a type defenition - `typedef void* Data;`.
+
 ### How to write `print` functions
 
-The `fptr_print` argument in the `Stack_print` and `Stack_new` functions is a callback that handles data in a stack node.
+The `fptr_print` argument in the `Stack_print` and `Stack_new` operations is a function that displays data in a stack.
 
 One must assume that a stack is homogeneous (e.g., contains data of the same type). For example, suppose we have a stack of integers, then we might write the function:
 
@@ -138,8 +132,6 @@ void print_int(Data data) {
 }
 ```
 
-Keep in mind that `fptr_print` expects its argument to be a type of `Data`.
-
 ## Resources
 
 [Mastering Algorithms with C](https://www.amazon.com/Mastering-Algorithms-Techniques-Sorting-Encryption/dp/1565924533/ref=sr_1_1?crid=1ZN4ENEQEGO5&keywords=mastering+c+algorithms&qid=1679619546&s=books&sprefix=mastering+c+algoritms%2Cstripbooks-intl-ship%2C221&sr=1-1) by Kyle Loudon.
@@ -148,4 +140,6 @@ Keep in mind that `fptr_print` expects its argument to be a type of `Data`.
 
 [Computer Systems: A Programmer's Perspective](https://www.amazon.com/Computer-Systems-Programmers-Randal-Bryant/dp/013034074X/ref=sr_1_3?crid=1NDI8BHE4BPQM&keywords=computer+systems+a+programmer%27s+perspective&qid=1679784732&s=books&sprefix=computer+pers%2Cstripbooks-intl-ship%2C199&sr=1-3) by Randal E. Bryant, David Richard O'Hallaron.
 
-[Patterns in C](https://leanpub.com/patternsinc) by Adam Tornhill
+[Patterns in C](https://leanpub.com/patternsinc) by Adam Tornhill.
+
+[Stack](https://en.wikipedia.org/wiki/Stack_(abstract_data_type)) Wikipedia.
